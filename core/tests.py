@@ -19,6 +19,10 @@ class HomeTests(TestCase):
         self.assertContains(response, "WhatsApp")
         self.assertContains(response, "Open the service assistant")
         self.assertContains(response, "data-chat-endpoint")
+        self.assertContains(response, "not a real review")
+        self.assertContains(response, "NOUSVA notes")
+        self.assertContains(response, "brand-butterfly")
+        self.assertContains(response, "service-image")
 
     def test_service_cards_link_to_detail_pages_in_new_tabs(self):
         response = self.client.get(reverse("home"))
@@ -45,6 +49,68 @@ class HomeTests(TestCase):
 
     def test_unknown_service_detail_returns_404(self):
         self.assertEqual(self.client.get("/services/not-a-service/").status_code, 404)
+
+    def test_insight_pages_render_and_unknown_slug_is_404(self):
+        response = self.client.get(reverse("insight-detail", args=["where-ai-agents-help-most"]))
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "where a person should stay in the loop")
+        self.assertEqual(self.client.get("/insights/not-an-article/").status_code, 404)
+
+
+class AuthenticationTests(TestCase):
+    def test_account_requires_authentication(self):
+        response = self.client.get(reverse("account"))
+        self.assertRedirects(response, f"{reverse('login')}?next={reverse('account')}")
+
+    def test_signup_creates_user_and_signs_them_in(self):
+        response = self.client.post(
+            reverse("signup"),
+            {
+                "username": "eshan",
+                "email": "eshanmahey17@gmail.com",
+                "password1": "NOUSVA-Strong-Password-827!",
+                "password2": "NOUSVA-Strong-Password-827!",
+            },
+        )
+        self.assertRedirects(response, reverse("account"))
+        self.assertEqual(response.wsgi_request.user.username, "eshan")
+        self.assertContains(self.client.get(reverse("account")), "eshanmahey17@gmail.com")
+
+    def test_duplicate_email_is_rejected(self):
+        from django.contrib.auth import get_user_model
+
+        get_user_model().objects.create_user(
+            username="existing", email="person@example.com", password="safe-password-123"
+        )
+        response = self.client.post(
+            reverse("signup"),
+            {
+                "username": "newuser",
+                "email": "PERSON@example.com",
+                "password1": "NOUSVA-Strong-Password-827!",
+                "password2": "NOUSVA-Strong-Password-827!",
+            },
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "An account with this email already exists.")
+
+    def test_login_and_post_logout(self):
+        from django.contrib.auth import get_user_model
+
+        get_user_model().objects.create_user(
+            username="member", email="member@example.com", password="safe-password-123"
+        )
+        response = self.client.post(
+            reverse("login"), {"username": "member", "password": "safe-password-123"}
+        )
+        self.assertRedirects(response, reverse("account"))
+        self.assertEqual(self.client.get(reverse("account")).status_code, 200)
+        self.assertEqual(self.client.get(reverse("logout")).status_code, 405)
+        self.assertRedirects(self.client.post(reverse("logout")), reverse("home"))
+        self.assertRedirects(
+            self.client.get(reverse("account")),
+            f"{reverse('login')}?next={reverse('account')}",
+        )
 
 
 class ContactTests(TestCase):

@@ -19,13 +19,21 @@
 
 <header class="nav">
   <div class="wrap">
-    <a href="#top" class="logo"><span class="logo-mark" aria-hidden="true">N</span>{{ brand }}</a>
+    <a href="#top" class="logo">{% include "core/brand_mark.html" %}{{ brand }}</a>
     <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="mainNav" aria-label="Open navigation menu"><span></span><span></span></button>
     <nav class="links" id="mainNav" aria-label="Main">
       <a href="#services">Services</a>
       <a href="#process">How it works</a>
+      <a href="#proof">Proof</a>
+      <a href="#insights">Insights</a>
       <a href="#aeo">AI visibility</a>
       <a href="#savings">Savings</a>
+      {% if user.is_authenticated %}
+      <a href="{% url 'account' %}">My account</a>
+      <form method="post" action="{% url 'logout' %}" class="nav-logout">{% csrf_token %}<button type="submit" class="text-action">Sign out</button></form>
+      {% else %}
+      <a href="{% url 'login' %}">Sign in</a>
+      {% endif %}
       <a href="#contact" class="btn small magnetic">Book a consultation</a>
     </nav>
   </div>
@@ -111,6 +119,7 @@
     <div class="grid">
       {% for s in services %}
       <a class="card tilt reveal service-card" href="{% url 'service-detail' s.slug %}" target="_blank" rel="noopener" aria-label="Learn more about {{ s.title }}">
+        <img class="service-image" src="{{ s.image.url }}" alt="{{ s.image.alt }}" loading="lazy" decoding="async">
         <div class="icon">
           {% if s.icon == 'automation' %}
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="6" cy="6" r="2.5"/><circle cx="18" cy="12" r="2.5"/><circle cx="6" cy="18" r="2.5"/><path d="M8.3 7.2l7.4 3.6M8.3 16.8l7.4-3.6"/></svg>
@@ -124,6 +133,44 @@
         <p>{{ s.description }}</p>
         <span class="service-card-link" aria-hidden="true">Explore this service <span>↗</span></span>
       </a>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- PROOF AND REVIEWS -->
+<section class="section alt" id="proof">
+  <div class="wrap">
+    <div class="head reveal">
+      <div class="eyebrow">Proof, with context</div>
+      <h2>Trust should be earned, not implied.</h2>
+      <p class="lede">We are collecting approved customer stories. The sample quotes below are placeholders to show the format, not real testimonials or claims of results.</p>
+    </div>
+    <div class="proof-grid">
+      <article class="proof-example reveal"><span class="proof-label">Illustrative placeholder · not a real review</span><blockquote>“A verified customer quote about an AI support workflow will appear here after approval.”</blockquote><p>Customer name and organization shown only with permission.</p></article>
+      <article class="proof-example reveal"><span class="proof-label">Illustrative placeholder · not a real review</span><blockquote>“A verified customer quote about a smoother handoff will appear here after approval.”</blockquote><p>Customer name and organization shown only with permission.</p></article>
+      <article class="proof-example reveal"><span class="proof-label">Illustrative placeholder · not a real review</span><blockquote>“A verified customer quote about clearer AI visibility will appear here after approval.”</blockquote><p>Customer name and organization shown only with permission.</p></article>
+    </div>
+    <div class="proof-note"><strong>Our standard:</strong> named outcomes and testimonials will be published only when verified and approved by the customer.</div>
+  </div>
+</section>
+
+<!-- INSIGHTS -->
+<section class="section" id="insights">
+  <div class="wrap">
+    <div class="head reveal">
+      <div class="eyebrow">NOUSVA notes</div>
+      <h2>Useful thinking for work in progress.</h2>
+      <p class="lede">Practical ideas for choosing, shaping, and improving business automation.</p>
+    </div>
+    <div class="insight-grid">
+      {% for insight in insights %}
+      <article class="insight-card reveal">
+        <div class="insight-meta"><span>{{ insight.category }}</span><span>{{ insight.reading_time }}</span></div>
+        <h3>{{ insight.title }}</h3>
+        <p>{{ insight.summary }}</p>
+        <a href="{% url 'insight-detail' insight.slug %}" aria-label="Read: {{ insight.title }}">Read article <span aria-hidden="true">&rarr;</span></a>
+      </article>
       {% endfor %}
     </div>
   </div>
@@ -271,7 +318,7 @@
 <footer class="footer">
   <div class="wrap">
     <div>© {{ brand }}. All rights reserved.</div>
-    <div class="flinks"><a href="#services">Services</a><a href="#aeo">AI visibility</a><a href="#contact">Contact</a></div>
+    <div class="flinks"><a href="#services">Services</a><a href="#proof">Proof</a><a href="#insights">Insights</a><a href="#contact">Contact</a></div>
   </div>
 </footer>
 

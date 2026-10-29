@@ -1,0 +1,26 @@
+{% load static %}<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{ insight.title }} | {{ brand }}</title>
+<meta name="theme-color" content="#F8F6F2">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&amp;family=Instrument+Serif:ital@0;1&amp;display=swap">
+<link rel="stylesheet" href="{% static 'css/site.css' %}">
+</head>
+<body class="insight-page">
+<header class="nav"><div class="wrap"><a href="{% url 'home' %}" class="logo">{% include "core/brand_mark.html" %}NOUSVA</a><nav class="links" aria-label="Main"><a href="{% url 'home' %}#insights">All insights</a><a href="{% url 'home' %}#contact" class="btn small">Talk with us</a></nav></div></header>
+<main>
+  <article class="insight-article">
+    <a class="detail-back" href="{% url 'home' %}#insights">&larr; All insights</a>
+    <div class="eyebrow">{{ insight.category }} · {{ insight.reading_time }}</div>
+    <h1>{{ insight.title }}</h1>
+    <p class="insight-deck">{{ insight.summary }}</p>
+    <div class="article-rule"></div>
+    {% for paragraph in insight.paragraphs %}<p>{{ paragraph }}</p>{% endfor %}
+    <a class="btn" href="{% url 'home' %}#contact">Discuss this with NOUSVA <span aria-hidden="true">&rarr;</span></a>
+  </article>
+</main>
+<footer class="detail-footer"><div class="wrap"><span>© {{ brand }}</span><a href="mailto:eshanmahey17@gmail.com">Contact NOUSVA</a></div></footer>
+</body>
+</html>

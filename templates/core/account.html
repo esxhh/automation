@@ -1,0 +1,23 @@
+{% load static %}<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Your account | {{ brand }}</title>
+<meta name="theme-color" content="#F8F6F2">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&amp;family=Instrument+Serif:ital@0;1&amp;display=swap">
+<link rel="stylesheet" href="{% static 'css/site.css' %}">
+</head>
+<body class="auth-page">
+<header class="nav"><div class="wrap"><a href="{% url 'home' %}" class="logo">{% include "core/brand_mark.html" %}NOUSVA</a><nav class="links" aria-label="Account navigation"><a href="{% url 'home' %}#services">Services</a><form method="post" action="{% url 'logout' %}" class="nav-logout">{% csrf_token %}<button type="submit" class="text-action">Sign out</button></form></nav></div></header>
+<main class="account-main">
+  <div class="eyebrow">Your NOUSVA account</div>
+  <h1>Welcome, {{ request.user.username }}.</h1>
+  <p class="lede">You are signed in with <strong>{{ request.user.email }}</strong>.</p>
+  {% if messages %}{% for message in messages %}<p class="flash {{ message.tags }}" role="status">{{ message }}</p>{% endfor %}{% endif %}
+  <div class="account-actions"><a class="btn" href="{% url 'home' %}#contact">Talk with our team <span aria-hidden="true">&rarr;</span></a><a class="btn ghost" href="{% url 'home' %}#services">Explore services</a></div>
+  <p class="auth-note">This account area is private. More client workspace tools can be added when your project workflow is defined.</p>
+</main>
+<footer class="detail-footer"><div class="wrap"><span>© {{ brand }}</span><a href="mailto:{{ request.user.email }}">Account email</a></div></footer>
+</body>
+</html>

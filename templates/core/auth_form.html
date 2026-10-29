@@ -1,0 +1,39 @@
+{% load static %}<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{ page_title }} | {{ brand|default:'NOUSVA' }}</title>
+<meta name="theme-color" content="#F8F6F2">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&amp;family=Instrument+Serif:ital@0;1&amp;display=swap">
+<link rel="stylesheet" href="{% static 'css/site.css' %}">
+</head>
+<body class="auth-page">
+<header class="nav"><div class="wrap"><a href="{% url 'home' %}" class="logo">{% include "core/brand_mark.html" %}NOUSVA</a><nav class="links" aria-label="Account navigation"><a href="{% url 'home' %}#services">Explore services</a></nav></div></header>
+<main class="auth-main">
+  <div class="auth-aside"><span class="eyebrow">NOUSVA / Account</span><p>Thoughtful systems begin with a clear conversation.</p></div>
+  <section class="auth-content" aria-labelledby="authHeading">
+    <a class="detail-back" href="{% url 'home' %}">&larr; Back to NOUSVA</a>
+    <h1 id="authHeading">{{ page_title }}</h1>
+    <p class="auth-intro">Use your account to access your private NOUSVA space.</p>
+    <form method="post" class="auth-form">
+      {% csrf_token %}
+      {% if next %}<input type="hidden" name="next" value="{{ next }}">{% endif %}
+      {% if form.non_field_errors %}<div class="auth-errors" role="alert">{{ form.non_field_errors }}</div>{% endif %}
+      {% for field in form %}
+      <div class="field">
+        <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+        {{ field }}
+        {% if field.help_text %}<small class="auth-help">{{ field.help_text }}</small>{% endif %}
+        {% for error in field.errors %}<small class="err">{{ error }}</small>{% endfor %}
+      </div>
+      {% endfor %}
+      <button class="btn" type="submit">{{ submit_label }}</button>
+    </form>
+    {% if page_title == 'Welcome back' %}<p class="auth-switch">New to NOUSVA? <a href="{% url 'signup' %}">Create an account</a></p>{% else %}<p class="auth-switch">Already have an account? <a href="{% url 'login' %}">Sign in</a></p>{% endif %}
+    <p class="auth-note">Creating an account does not subscribe you to marketing emails.</p>
+  </section>
+</main>
+<footer class="detail-footer"><div class="wrap"><span>© NOUSVA</span><a href="mailto:eshanmahey17@gmail.com">Contact us</a></div></footer>
+</body>
+</html>

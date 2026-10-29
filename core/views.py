@@ -4,13 +4,16 @@ from urllib.request import Request, urlopen
 
 from django.conf import settings
 from django.contrib import messages
+from django.contrib.auth import login
+from django.contrib.auth.decorators import login_required
 from django.core.cache import cache
 from django.core.mail import send_mail
 from django.http import Http404, JsonResponse
-from django.shortcuts import redirect, render
+from django.shortcuts import get_object_or_404, redirect, render
 from django.views.decorators.http import require_POST
 
-from .forms import AuditForm, InquiryForm
+from .content import INSIGHTS, SERVICE_IMAGES
+from .forms import AuditForm, InquiryForm, SignUpForm
 from .models import Faq, Service
 
 # Shown until you add your own in the admin (Services / FAQs).
@@ -188,6 +191,11 @@ def home(request):
     for service in services:
         if not isinstance(service, dict):
             service.slug = SERVICE_SLUGS.get(service.icon, "personalised-ai-agents")
+            service.image = SERVICE_IMAGES.get(service.slug, SERVICE_IMAGES["personalised-ai-agents"])
+        else:
+            service["image"] = SERVICE_IMAGES.get(
+                service["slug"], SERVICE_IMAGES["personalised-ai-agents"]
+            )
     faqs = list(Faq.objects.filter(is_active=True)) or DEFAULT_FAQS
     return render(
         request,
@@ -201,6 +209,7 @@ def home(request):
             "contact_phone": settings.CONTACT_PHONE,
             "whatsapp_phone": settings.WHATSAPP_PHONE,
             "chat_enabled": bool(settings.CHAT_API_KEY),
+            "insights": INSIGHTS,
         },
     )
 
@@ -209,6 +218,7 @@ def service_detail(request, slug):
     service = SERVICE_DETAILS.get(slug)
     if service is None:
         raise Http404("Service not found")
+    service["image"] = SERVICE_IMAGES[slug]
     return render(
         request,
         "core/service_detail.html",
@@ -220,6 +230,42 @@ def service_detail(request, slug):
             "contact_phone": settings.CONTACT_PHONE,
             "whatsapp_phone": settings.WHATSAPP_PHONE,
         },
+    )
+
+
+def insight_detail(request, slug):
+    insight = next((item for item in INSIGHTS if item["slug"] == slug), None)
+    if insight is None:
+        raise Http404("Insight not found")
+    return render(
+        request,
+        "core/insight_detail.html",
+        {"insight": insight, "brand": settings.SITE_NAME},
+    )
+
+
+def signup(request):
+    if request.user.is_authenticated:
+        return redirect("account")
+    form = SignUpForm(request.POST or None)
+    if request.method == "POST" and form.is_valid():
+        user = form.save()
+        login(request, user)
+        messages.success(request, "Your NOUSVA account is ready.")
+        return redirect("account")
+    return render(
+        request,
+        "core/auth_form.html",
+        {"form": form, "page_title": "Create your account", "submit_label": "Create account"},
+    )
+
+
+@login_required
+def account(request):
+    return render(
+        request,
+        "core/account.html",
+        {"brand": settings.SITE_NAME},
     )
 
 
