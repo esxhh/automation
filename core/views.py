@@ -199,6 +199,7 @@ def home(request):
             "brand": settings.SITE_NAME,
             "contact_email": settings.CONTACT_EMAIL,
             "contact_phone": settings.CONTACT_PHONE,
+            "whatsapp_phone": settings.WHATSAPP_PHONE,
             "chat_enabled": bool(settings.CHAT_API_KEY),
         },
     )
@@ -215,6 +216,9 @@ def service_detail(request, slug):
             "service": service,
             "brand": settings.SITE_NAME,
             "chat_enabled": bool(settings.CHAT_API_KEY),
+            "contact_email": settings.CONTACT_EMAIL,
+            "contact_phone": settings.CONTACT_PHONE,
+            "whatsapp_phone": settings.WHATSAPP_PHONE,
         },
     )
 

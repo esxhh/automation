@@ -1,6 +1,32 @@
 (function () {
   'use strict';
 
+  document.querySelectorAll('.nav').forEach(function (nav) {
+    var toggle = nav.querySelector('.nav-toggle');
+    var links = nav.querySelector('.links');
+    if (!toggle || !links) return;
+    function closeNav() {
+      nav.classList.remove('is-open');
+      toggle.setAttribute('aria-expanded', 'false');
+      toggle.setAttribute('aria-label', 'Open navigation menu');
+    }
+    toggle.addEventListener('click', function () {
+      var isOpen = toggle.getAttribute('aria-expanded') === 'true';
+      nav.classList.toggle('is-open', !isOpen);
+      toggle.setAttribute('aria-expanded', String(!isOpen));
+      toggle.setAttribute('aria-label', isOpen ? 'Open navigation menu' : 'Close navigation menu');
+    });
+    links.addEventListener('click', function (event) {
+      if (event.target.closest('a')) closeNav();
+    });
+    document.addEventListener('keydown', function (event) {
+      if (event.key === 'Escape') closeNav();
+    });
+    window.addEventListener('resize', function () {
+      if (window.innerWidth > 800) closeNav();
+    });
+  });
+
   var widget = document.querySelector('.assistant-widget');
   if (!widget) return;
 

@@ -14,6 +14,9 @@ class HomeTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "Personalised AI agents")
         self.assertContains(response, "csrfmiddlewaretoken")
+        self.assertContains(response, "NOUSVA")
+        self.assertContains(response, "eshanmahey17@gmail.com")
+        self.assertContains(response, "WhatsApp")
         self.assertContains(response, "Open the service assistant")
         self.assertContains(response, "data-chat-endpoint")
 

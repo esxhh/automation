@@ -131,13 +131,14 @@
 
   /* ---------- sparkle particles (tap, click and drag) ---------- */
   var cv = $('#sparkles'), ctx = cv && cv.getContext('2d'), parts = [], running = false, lastTrail = 0;
+  var effectsEnabled = !!(cv && ctx && !reduce && getComputedStyle(cv).display !== 'none');
   function sizeCanvas() {
     var d = window.devicePixelRatio || 1;
     cv.width = window.innerWidth * d; cv.height = window.innerHeight * d;
     ctx.setTransform(d, 0, 0, d, 0, 0);
   }
   function burst(x, y, n, speed) {
-    if (reduce || !ctx) return;
+    if (!effectsEnabled) return;
     for (var i = 0; i < n; i++) {
       var a = Math.random() * Math.PI * 2, v = (0.6 + Math.random()) * speed;
       parts.push({
@@ -161,7 +162,7 @@
     ctx.globalAlpha = 1;
     if (parts.length) requestAnimationFrame(tick); else { running = false; ctx.clearRect(0, 0, window.innerWidth, window.innerHeight); }
   }
-  if (cv && !reduce) {
+  if (effectsEnabled) {
     sizeCanvas();
     window.addEventListener('resize', sizeCanvas);
     window.addEventListener('pointerdown', function (e) { burst(e.clientX, e.clientY, 16, 2.6); }, { passive: true });

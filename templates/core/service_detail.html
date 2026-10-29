@@ -8,14 +8,15 @@
 <meta name="theme-color" content="#FFFFFF">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&amp;family=Instrument+Serif:ital@0;1&amp;display=swap" rel="stylesheet">
 <link rel="stylesheet" href="{% static 'css/site.css' %}">
 </head>
 <body>
 <header class="nav">
   <div class="wrap">
-    <a href="/" class="logo"><i></i>{{ brand }}</a>
-    <nav class="links" aria-label="Main">
+    <a href="/" class="logo"><span class="logo-mark" aria-hidden="true">N</span>{{ brand }}</a>
+    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="detailNav" aria-label="Open navigation menu"><span></span><span></span></button>
+    <nav class="links" id="detailNav" aria-label="Main">
       <a href="/#services">All services</a>
       <a href="/#contact" class="btn small">Book a consultation</a>
     </nav>
@@ -71,7 +72,7 @@
     </div>
   </section>
 </main>
-<footer class="detail-footer"><div class="wrap"><span>© {{ brand }}. All rights reserved.</span><a href="/#services">Explore all services</a></div></footer>
+<footer class="detail-footer"><div class="wrap"><span>© {{ brand }}. All rights reserved.</span><div class="flinks"><a href="mailto:{{ contact_email }}">{{ contact_email }}</a><a href="https://wa.me/{{ whatsapp_phone }}" target="_blank" rel="noopener">WhatsApp 9258679510</a><a href="/#services">Explore all services</a></div></div></footer>
 {% include "core/assistant_widget.html" %}
 <script src="{% static 'js/assistant.js' %}" defer></script>
 </body>

@@ -1,6 +1,6 @@
-# AI agency website (Django)
+# NOUSVA website (Django)
 
-A one-page site for an AI agents and automation company, with a Django backend.
+A responsive editorial website for NOUSVA, an AI agents and automation company, with a Django backend.
 
 ## Website assistant
 
@@ -13,10 +13,9 @@ The floating service assistant works without an external provider key using buil
   - "Free AI visibility check" form saves requests (`/api/audit/`).
   - Both have validation, a hidden honeypot field, CSRF protection, a per-IP rate limit, and optional email notification.
   - Admin at `/admin/` to read enquiries, mark them handled, and edit the **Services** and **FAQs** shown on the page.
-- **Frontend:** a bright white theme with dark readable text and turquoise, green, gold, orange and ember-red accents.
-  - Animated, tappable moth that follows the pointer.
-  - Scroll reveal, glow that follows your finger or mouse, 3D tilt cards, magnetic buttons, button ripples, sparkles on tap, rotating headline words, live form validation, a savings estimator, FAQ accordion.
-  - Respects the "reduce motion" setting.
+- **Frontend:** warm paper and terracotta palette, editorial serif headings, responsive navigation and layouts, service detail pages, customer assistant, live form validation, savings estimator, and FAQ accordion.
+
+Default contact details are `eshanmahey17@gmail.com` and WhatsApp `9258679510`. They can be changed with `CONTACT_EMAIL`, `CONTACT_PHONE`, and `WHATSAPP_PHONE` environment variables.
 
 ## Run it locally
 
@@ -40,7 +39,7 @@ Set these environment variables (or edit `config/settings.py`):
 
 | Variable | Purpose |
 | --- | --- |
-| `SITE_NAME` | Your company name (default "Your Brand") |
+| `SITE_NAME` | Your company name (default "NOUSVA") |
 | `CONTACT_EMAIL`, `CONTACT_PHONE` | Shown in the contact section |
 | `NOTIFY_EMAIL` | Where new enquiries are emailed (empty = database only) |
 | `EMAIL_HOST`, `EMAIL_PORT`, `EMAIL_HOST_USER`, `EMAIL_HOST_PASSWORD` | SMTP settings. Without these, emails print in the terminal |

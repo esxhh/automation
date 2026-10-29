@@ -112,9 +112,10 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 CACHES = {"default": {"BACKEND": "django.core.cache.backends.locmem.LocMemCache"}}
 
 # --- Site details shown on the page (edit via environment variables) ---
-SITE_NAME = os.environ.get("SITE_NAME", "Your Brand")
-CONTACT_EMAIL = os.environ.get("CONTACT_EMAIL", "hello@example.com")
-CONTACT_PHONE = os.environ.get("CONTACT_PHONE", "+00 00000 00000")
+SITE_NAME = os.environ.get("SITE_NAME", "NOUSVA")
+CONTACT_EMAIL = os.environ.get("CONTACT_EMAIL", "eshanmahey17@gmail.com")
+CONTACT_PHONE = os.environ.get("CONTACT_PHONE", "+91 92586 79510")
+WHATSAPP_PHONE = os.environ.get("WHATSAPP_PHONE", "919258675910")
 
 # --- Email ---
 # Prints emails to the terminal by default. Set EMAIL_HOST etc. to send for real.
