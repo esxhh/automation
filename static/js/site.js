@@ -17,6 +17,34 @@
   window.addEventListener('scroll', onScroll, { passive: true });
   onScroll();
 
+  /* ---------- responsive navigation + active section ---------- */
+  var nav = $('.nav'), navToggle = $('.nav-toggle'), navLinks = $$('.links a[href^="#"]');
+  function closeNav() {
+    if (!nav || !navToggle) return;
+    nav.classList.remove('is-open');
+    navToggle.setAttribute('aria-expanded', 'false');
+  }
+  if (nav && navToggle) {
+    navLinks.forEach(function (link) { link.addEventListener('click', closeNav); });
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeNav(); });
+    document.addEventListener('pointerdown', function (e) {
+      if (!nav.contains(e.target)) closeNav();
+    });
+  }
+  if ('IntersectionObserver' in window && navLinks.length) {
+    var sections = navLinks.map(function (link) { return $(link.getAttribute('href')); }).filter(Boolean);
+    var activeSection = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (!entry.isIntersecting) return;
+        navLinks.forEach(function (link) {
+          if (link.getAttribute('href') === '#' + entry.target.id) link.setAttribute('aria-current', 'location');
+          else link.removeAttribute('aria-current');
+        });
+      });
+    }, { rootMargin: '-24% 0px -64% 0px' });
+    sections.forEach(function (section) { activeSection.observe(section); });
+  }
+
   /* ---------- scroll reveal ---------- */
   var reveals = $$('.reveal');
   if ('IntersectionObserver' in window && !reduce) {

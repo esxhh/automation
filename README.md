@@ -45,8 +45,10 @@ Set these environment variables (or edit `config/settings.py`):
 | --- | --- |
 | `SITE_NAME` | Your company name (default "NOUSVA") |
 | `CONTACT_EMAIL`, `CONTACT_PHONE` | Shown in the contact section |
-| `NOTIFY_EMAIL` | Where new enquiries are emailed (empty = database only) |
+| `NOTIFY_EMAIL` | Inbox for consultation and AI visibility requests (defaults to `CONTACT_EMAIL`) |
 | `EMAIL_HOST`, `EMAIL_PORT`, `EMAIL_HOST_USER`, `EMAIL_HOST_PASSWORD` | SMTP settings. Without these, emails print in the terminal |
+
+For inbox delivery, configure SMTP environment variables on the deployed web service. For Gmail, use `smtp.gmail.com`, port `587`, TLS enabled, your Gmail address as `EMAIL_HOST_USER`, and a Google App Password as `EMAIL_HOST_PASSWORD` (not your normal Gmail password). Set `DEFAULT_FROM_EMAIL` to the authenticated sender address. Keep all mail credentials out of source control. Requests remain available in Django Admin under **Inquiries** and **Audit requests** if email delivery is temporarily unavailable.
 
 ## Deploy
 

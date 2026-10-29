@@ -1,4 +1,5 @@
 from django.core.cache import cache
+from django.core import mail
 from django.test import TestCase, override_settings
 from django.urls import reverse
 from unittest.mock import patch
@@ -140,6 +141,19 @@ class ContactTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertTrue(response.json()["ok"])
         self.assertEqual(Inquiry.objects.count(), 1)
+
+    @override_settings(
+        NOTIFY_EMAIL="eshanmahey17@gmail.com",
+        EMAIL_BACKEND="django.core.mail.backends.locmem.EmailBackend",
+    )
+    def test_valid_submission_emails_consultation_details(self):
+        response = self.client.post(self.url, self.valid, **AJAX)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(len(mail.outbox), 1)
+        self.assertEqual(mail.outbox[0].to, ["eshanmahey17@gmail.com"])
+        self.assertIn("Asha Foods", mail.outbox[0].body)
+        self.assertIn("customer support", mail.outbox[0].body)
 
     def test_invalid_submission_returns_field_errors(self):
         response = self.client.post(self.url, {**self.valid, "email": "nope", "message": "hi"}, **AJAX)

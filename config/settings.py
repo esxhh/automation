@@ -132,8 +132,8 @@ if os.environ.get("EMAIL_HOST"):
 else:
     EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 DEFAULT_FROM_EMAIL = os.environ.get("DEFAULT_FROM_EMAIL", CONTACT_EMAIL)
-# Where new enquiries are emailed. Leave empty to only store them in the database.
-NOTIFY_EMAIL = os.environ.get("NOTIFY_EMAIL", "")
+# New enquiries go to the site contact inbox unless explicitly overridden.
+NOTIFY_EMAIL = os.environ.get("NOTIFY_EMAIL", CONTACT_EMAIL)
 
 # --- Website assistant (the API key is server-side only) ---
 CHAT_API_KEY = os.environ.get("OPENAI_API_KEY", "").strip()

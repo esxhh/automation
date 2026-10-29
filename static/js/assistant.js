@@ -23,7 +23,7 @@
       if (event.key === 'Escape') closeNav();
     });
     window.addEventListener('resize', function () {
-      if (window.innerWidth > 800) closeNav();
+      if (window.innerWidth > 1020) closeNav();
     });
   });
 

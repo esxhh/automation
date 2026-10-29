@@ -1,4 +1,5 @@
 import json
+import logging
 from urllib.error import HTTPError, URLError
 from urllib.request import Request, urlopen
 
@@ -15,6 +16,8 @@ from django.views.decorators.http import require_POST
 from .content import INSIGHTS, SERVICE_IMAGES
 from .forms import AuditForm, InquiryForm, SignUpForm
 from .models import Faq, Service
+
+logger = logging.getLogger(__name__)
 
 # Shown until you add your own in the admin (Services / FAQs).
 DEFAULT_SERVICES = [
@@ -439,13 +442,16 @@ def _wants_json(request):
 
 def _notify(subject, body):
     if settings.NOTIFY_EMAIL:
-        send_mail(
-            subject,
-            body,
-            settings.DEFAULT_FROM_EMAIL,
-            [settings.NOTIFY_EMAIL],
-            fail_silently=True,
-        )
+        try:
+            send_mail(
+                subject,
+                body,
+                settings.DEFAULT_FROM_EMAIL,
+                [settings.NOTIFY_EMAIL],
+                fail_silently=False,
+            )
+        except Exception:
+            logger.exception("Could not email a new site enquiry to %s", settings.NOTIFY_EMAIL)
 
 
 def _respond(request, ok, message, errors=None, status=200):
