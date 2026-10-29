@@ -14,6 +14,32 @@ class HomeTests(TestCase):
         self.assertContains(response, "Personalised AI agents")
         self.assertContains(response, "csrfmiddlewaretoken")
 
+    def test_service_cards_link_to_detail_pages_in_new_tabs(self):
+        response = self.client.get(reverse("home"))
+        for slug in (
+            "personalised-ai-agents",
+            "custom-task-automation",
+            "ai-engine-optimization",
+        ):
+            link = f'href="{reverse("service-detail", args=[slug])}" target="_blank" rel="noopener"'
+            self.assertContains(response, link)
+
+    def test_service_detail_pages_render(self):
+        titles = {
+            "personalised-ai-agents": "Personalised AI agents",
+            "custom-task-automation": "Custom task automation",
+            "ai-engine-optimization": "AI engine optimization",
+        }
+        for slug, title in titles.items():
+            with self.subTest(slug=slug):
+                response = self.client.get(reverse("service-detail", args=[slug]))
+                self.assertEqual(response.status_code, 200)
+                self.assertContains(response, title)
+                self.assertContains(response, "What this service can do")
+
+    def test_unknown_service_detail_returns_404(self):
+        self.assertEqual(self.client.get("/services/not-a-service/").status_code, 404)
+
 
 class ContactTests(TestCase):
     def setUp(self):

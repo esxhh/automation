@@ -1,0 +1,76 @@
+{% load static %}<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{ service.title }} | {{ brand }}</title>
+<meta name="description" content="Learn how {{ brand }} delivers {{ service.title|lower }} for your business.">
+<meta name="theme-color" content="#FFFFFF">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{% static 'css/site.css' %}">
+</head>
+<body>
+<header class="nav">
+  <div class="wrap">
+    <a href="/" class="logo"><i></i>{{ brand }}</a>
+    <nav class="links" aria-label="Main">
+      <a href="/#services">All services</a>
+      <a href="/#contact" class="btn small">Book a consultation</a>
+    </nav>
+  </div>
+</header>
+<main class="service-detail">
+  <section class="service-detail-hero">
+    <div class="wrap">
+      <a class="detail-back" href="/#services">&larr; All services</a>
+      <div class="eyebrow">{{ service.eyebrow }}</div>
+      <h1>{{ service.title }}</h1>
+      <p class="lede">{{ service.intro }}</p>
+      <a class="btn" href="/#contact">Talk about your workflow</a>
+    </div>
+  </section>
+  <section class="section">
+    <div class="wrap narrow">
+      <div class="head">
+        <div class="eyebrow">The service</div>
+        <h2>Built around how your business works.</h2>
+        <p class="lede">{{ service.overview }}</p>
+      </div>
+      <p class="detail-fit"><strong>Best suited to:</strong> {{ service.fit }}</p>
+    </div>
+  </section>
+  <section class="section alt">
+    <div class="wrap">
+      <div class="detail-grid">
+        <article class="detail-panel">
+          <h3>What this service can do</h3>
+          <ul>{% for item in service.outcomes %}<li>{{ item }}</li>{% endfor %}</ul>
+        </article>
+        <article class="detail-panel">
+          <h3>Examples</h3>
+          <ul>{% for item in service.examples %}<li>{{ item }}</li>{% endfor %}</ul>
+        </article>
+        <article class="detail-panel">
+          <h3>How we deliver it</h3>
+          <ol>{% for item in service.process %}<li>{{ item }}</li>{% endfor %}</ol>
+        </article>
+      </div>
+    </div>
+  </section>
+  <section class="section">
+    <div class="wrap">
+      <div class="detail-cta">
+        <div class="detail-cta-copy">
+          <h2>Let’s find the right first step.</h2>
+          <p>Tell us what your team needs and we’ll discuss a practical scope for your business.</p>
+        </div>
+        <a class="btn" href="/#contact">Book a free consultation</a>
+      </div>
+    </div>
+  </section>
+</main>
+<footer class="detail-footer"><div class="wrap"><span>© {{ brand }}. All rights reserved.</span><a href="/#services">Explore all services</a></div></footer>
+</body>
+</html>

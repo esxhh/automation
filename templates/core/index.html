@@ -109,7 +109,7 @@
     </div>
     <div class="grid">
       {% for s in services %}
-      <article class="card tilt reveal">
+      <a class="card tilt reveal service-card" href="{% url 'service-detail' s.slug %}" target="_blank" rel="noopener" aria-label="Learn more about {{ s.title }}">
         <div class="icon">
           {% if s.icon == 'automation' %}
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="6" cy="6" r="2.5"/><circle cx="18" cy="12" r="2.5"/><circle cx="6" cy="18" r="2.5"/><path d="M8.3 7.2l7.4 3.6M8.3 16.8l7.4-3.6"/></svg>
@@ -121,7 +121,8 @@
         </div>
         <h3>{{ s.title }}</h3>
         <p>{{ s.description }}</p>
-      </article>
+        <span class="service-card-link" aria-hidden="true">Explore this service <span>↗</span></span>
+      </a>
       {% endfor %}
     </div>
   </div>
