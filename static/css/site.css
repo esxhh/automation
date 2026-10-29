@@ -496,6 +496,7 @@ details p { max-width: 680px; padding-bottom: 20px; color: #706B63; font-size: 1
   .nav .wrap { position: relative; min-height: 68px; }
   .nav-toggle { display: block; margin-left: auto; }
   .links { position: absolute; top: 100%; left: 0; right: 0; display: none; align-items: stretch; gap: 0; padding: 8px 26px 20px; border-bottom: 1px solid #E4DED4; background: #F8F6F2; }
+  .nav.is-open .links { max-height: calc(100dvh - 76px); overflow-y: auto; overscroll-behavior: contain; }
   .nav.is-open .links { display: flex; flex-direction: column; }
   .links a:not(.btn) { display: block; padding: 13px 0; border-bottom: 1px solid #E4DED4; color: #39342F; }
   .links .btn { align-self: flex-start; margin-top: 14px; }
