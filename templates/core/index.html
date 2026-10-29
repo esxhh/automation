@@ -1,0 +1,279 @@
+{% load static %}<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{ brand }} | Personalised AI Agents &amp; Automation</title>
+<meta name="description" content="{{ brand }} designs personalised AI agents, automates repetitive tasks and helps your business get recommended by AI assistants.">
+<meta name="theme-color" content="#07070A">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='14' fill='%2319D3C5'/%3E%3Ccircle cx='16' cy='16' r='7' fill='%23FF8A1F'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{% static 'css/site.css' %}">
+</head>
+<body>
+<div class="progress" id="progress" aria-hidden="true"></div>
+<div class="glow" aria-hidden="true"></div>
+<canvas id="sparkles" aria-hidden="true"></canvas>
+
+<header class="nav">
+  <div class="wrap">
+    <a href="#top" class="logo"><i></i>{{ brand }}</a>
+    <nav class="links" aria-label="Main">
+      <a href="#services">Services</a>
+      <a href="#process">How it works</a>
+      <a href="#aeo">AI visibility</a>
+      <a href="#savings">Savings</a>
+      <a href="#contact" class="btn small magnetic">Book a consultation</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+
+{% if messages %}
+<div class="wrap" style="padding-top:16px">
+  {% for message in messages %}<p class="flash {{ message.tags }}" role="status">{{ message }}</p>{% endfor %}
+</div>
+{% endif %}
+
+<!-- HERO -->
+<section class="hero" id="hero">
+  <div class="wrap">
+    <div class="hero-copy">
+      <div class="eyebrow">AI agents built around your business</div>
+      <h1>AI agents that take over your <span class="rot shimmer" id="rot" data-words='["busywork","customer support","lead follow-up","invoicing","weekly reports","onboarding"]'>busywork</span>.</h1>
+      <p class="lede">We design, build and run personalised AI agents that take repetitive work off your plate, and we make sure your business is the one AI assistants recommend.</p>
+      <div class="cta-row">
+        <a href="#contact" class="btn magnetic">Book a free consultation</a>
+        <a href="#services" class="btn ghost magnetic">See what we build</a>
+      </div>
+    </div>
+
+    <div class="hero-art" id="heroArt">
+      <svg class="moth" id="moth" viewBox="0 0 400 320" role="img" aria-label="A glowing, iridescent moth with flapping wings. Tap it.">
+        <defs>
+          <linearGradient id="gTeal" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#19D3C5"/><stop offset="1" stop-color="#37E08F"/></linearGradient>
+          <linearGradient id="gGold" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#F6C945"/><stop offset="1" stop-color="#FF8A1F"/></linearGradient>
+          <linearGradient id="gEmber" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FF8A1F"/><stop offset="1" stop-color="#E5391F"/></linearGradient>
+          <linearGradient id="gWing" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#14141C"/><stop offset="1" stop-color="#07070A"/></linearGradient>
+          <radialGradient id="gBody" cx=".5" cy=".4" r=".7"><stop offset="0" stop-color="#3A3A48"/><stop offset="1" stop-color="#0A0A0F"/></radialGradient>
+        </defs>
+
+        <g class="wing-set">
+          <g>
+            <g class="wing">
+              <path d="M204 138 C238 60 318 22 392 62 C396 118 330 168 206 158 Z" fill="url(#gWing)" stroke="#2A2A38" stroke-width="1.5"/>
+              <path d="M214 141 C250 82 312 52 372 71" fill="none" stroke="url(#gTeal)" stroke-width="9" stroke-linecap="round"/>
+              <path d="M216 148 C262 113 322 99 378 101" fill="none" stroke="url(#gGold)" stroke-width="8" stroke-linecap="round"/>
+              <path d="M214 154 C262 150 316 141 360 119" fill="none" stroke="url(#gEmber)" stroke-width="6" stroke-linecap="round"/>
+              <path d="M206 152 C300 150 372 188 342 250 C338 270 326 288 308 298 C304 270 284 244 250 234 C222 220 208 194 206 152 Z" fill="url(#gWing)" stroke="#2A2A38" stroke-width="1.5"/>
+              <path d="M222 168 C292 168 346 192 330 238" fill="none" stroke="url(#gTeal)" stroke-width="10" stroke-linecap="round"/>
+              <path d="M224 188 C276 190 312 208 306 242" fill="none" stroke="url(#gGold)" stroke-width="8" stroke-linecap="round"/>
+              <path d="M316 262 C318 276 314 288 309 296" fill="none" stroke="url(#gEmber)" stroke-width="5" stroke-linecap="round"/>
+              <circle cx="328" cy="236" r="5" fill="#F6C945"/>
+              <circle cx="300" cy="206" r="3" fill="#19D3C5"/>
+            </g>
+          </g>
+          <g transform="translate(400 0) scale(-1 1)">
+            <g class="wing">
+              <path d="M204 138 C238 60 318 22 392 62 C396 118 330 168 206 158 Z" fill="url(#gWing)" stroke="#2A2A38" stroke-width="1.5"/>
+              <path d="M214 141 C250 82 312 52 372 71" fill="none" stroke="url(#gTeal)" stroke-width="9" stroke-linecap="round"/>
+              <path d="M216 148 C262 113 322 99 378 101" fill="none" stroke="url(#gGold)" stroke-width="8" stroke-linecap="round"/>
+              <path d="M214 154 C262 150 316 141 360 119" fill="none" stroke="url(#gEmber)" stroke-width="6" stroke-linecap="round"/>
+              <path d="M206 152 C300 150 372 188 342 250 C338 270 326 288 308 298 C304 270 284 244 250 234 C222 220 208 194 206 152 Z" fill="url(#gWing)" stroke="#2A2A38" stroke-width="1.5"/>
+              <path d="M222 168 C292 168 346 192 330 238" fill="none" stroke="url(#gTeal)" stroke-width="10" stroke-linecap="round"/>
+              <path d="M224 188 C276 190 312 208 306 242" fill="none" stroke="url(#gGold)" stroke-width="8" stroke-linecap="round"/>
+              <path d="M316 262 C318 276 314 288 309 296" fill="none" stroke="url(#gEmber)" stroke-width="5" stroke-linecap="round"/>
+              <circle cx="328" cy="236" r="5" fill="#F6C945"/>
+              <circle cx="300" cy="206" r="3" fill="#19D3C5"/>
+            </g>
+          </g>
+        </g>
+        <ellipse cx="200" cy="170" rx="9" ry="46" fill="url(#gBody)" stroke="#3A3A48" stroke-width="1"/>
+        <circle cx="200" cy="122" r="9" fill="url(#gBody)" stroke="#3A3A48" stroke-width="1"/>
+        <path d="M196 116 C186 90 170 76 156 72" fill="none" stroke="#9FB4B0" stroke-width="1.8" stroke-linecap="round"/>
+        <path d="M204 116 C214 90 230 76 244 72" fill="none" stroke="#9FB4B0" stroke-width="1.8" stroke-linecap="round"/>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section class="section" id="services">
+  <div class="wrap">
+    <div class="head reveal">
+      <div class="eyebrow">What we do</div>
+      <h2>Three services, one goal: less busywork, more growth.</h2>
+    </div>
+    <div class="grid">
+      {% for s in services %}
+      <article class="card tilt reveal">
+        <div class="icon">
+          {% if s.icon == 'automation' %}
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="6" cy="6" r="2.5"/><circle cx="18" cy="12" r="2.5"/><circle cx="6" cy="18" r="2.5"/><path d="M8.3 7.2l7.4 3.6M8.3 16.8l7.4-3.6"/></svg>
+          {% elif s.icon == 'aeo' %}
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="M20 20l-4.2-4.2M11 8.5v5M8.5 11h5"/></svg>
+          {% else %}
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="7" width="16" height="12" rx="3"/><path d="M12 3v4"/><circle cx="9" cy="13" r="1"/><circle cx="15" cy="13" r="1"/></svg>
+          {% endif %}
+        </div>
+        <h3>{{ s.title }}</h3>
+        <p>{{ s.description }}</p>
+      </article>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- PROCESS -->
+<section class="section alt" id="process">
+  <div class="wrap">
+    <div class="head reveal">
+      <div class="eyebrow">How it works</div>
+      <h2>From first call to a working agent.</h2>
+    </div>
+    <div class="steps">
+      <div class="step reveal"><b>01</b><h3>Discover</h3><p>We map how your team spends its time and pick the tasks where automation pays off fastest.</p></div>
+      <div class="step reveal"><b>02</b><h3>Design</h3><p>We define what the agent does, which tools it can use, and the guardrails that keep it safe and on brand.</p></div>
+      <div class="step reveal"><b>03</b><h3>Build and test</h3><p>We build it on your real workflows, test it against real cases, and keep a human in the loop until you trust it.</p></div>
+      <div class="step reveal"><b>04</b><h3>Launch and improve</h3><p>We go live, watch the results, and keep tuning so the agent improves as your business changes.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- AI ENGINE OPTIMIZATION -->
+<section class="section" id="aeo">
+  <div class="wrap split">
+    <div class="col reveal">
+      <div class="eyebrow">AI engine optimization</div>
+      <h2>When customers ask AI, will it mention you?</h2>
+      <p class="lede">Search is shifting from a list of links to a single AI answer. If assistants cannot clearly understand who you are and what you do, they will recommend someone else.</p>
+      <ul class="ticks">
+        <li><b>Audit</b> how major AI assistants describe you today.</li>
+        <li><b>Structure</b> your content, data and profiles so they are easy to cite.</li>
+        <li><b>Build authority</b> with the trusted sources AI draws from.</li>
+        <li><b>Track</b> your mentions over time.</li>
+      </ul>
+    </div>
+    <div class="col reveal">
+      <div class="chat" id="chat" aria-label="Illustration of an AI assistant recommending a business">
+        <div class="chat-label">Illustration</div>
+        <div class="bubble user">Which company can automate my invoicing with AI?</div>
+        <div class="bubble ai typing" aria-hidden="true"><span></span><span></span><span></span></div>
+        <div class="bubble ai answer">A business with clear, well-structured information is easier for an assistant to recommend. <strong>{{ brand }}</strong> helps you become that business.</div>
+      </div>
+
+      <form class="panel audit" id="auditForm" action="{% url 'audit' %}" method="post" novalidate data-ajax>
+        {% csrf_token %}
+        <h3>Get a free AI visibility check</h3>
+        <p class="muted">Tell us about your business and we will see how AI assistants describe it.</p>
+        <input class="hp" type="text" name="nickname" tabindex="-1" autocomplete="off" aria-hidden="true">
+        <div class="field"><label for="a-business">Business name</label><input id="a-business" name="business_name" required autocomplete="organization"><small class="err" data-for="business_name"></small></div>
+        <div class="field"><label for="a-site">Website</label><input id="a-site" name="website" placeholder="example.com" required inputmode="url" autocomplete="url"><small class="err" data-for="website"></small></div>
+        <div class="field"><label for="a-email">Email</label><input id="a-email" type="email" name="email" required autocomplete="email"><small class="err" data-for="email"></small></div>
+        <button class="btn" type="submit">Request my check</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- SAVINGS CALCULATOR -->
+<section class="section alt" id="savings">
+  <div class="wrap">
+    <div class="head reveal">
+      <div class="eyebrow">Savings estimator</div>
+      <h2>What could automation give back to you?</h2>
+      <p class="lede">Move the sliders. This is an illustrative estimate based only on your own numbers, not a promise.</p>
+    </div>
+    <div class="panel calc reveal">
+      <div class="calc-inputs">
+        <div class="field">
+          <label for="hours">Hours per week spent on repetitive tasks: <output id="hoursOut">10</output></label>
+          <input type="range" id="hours" min="1" max="80" value="10">
+        </div>
+        <div class="field">
+          <label for="share">Share an agent could handle: <output id="shareOut">60%</output></label>
+          <input type="range" id="share" min="20" max="90" step="5" value="60">
+        </div>
+        <div class="row">
+          <div class="field"><label for="cost">Cost of one hour</label><input type="number" id="cost" min="0" value="500" inputmode="numeric"></div>
+          <div class="field"><label for="currency">Currency</label>
+            <select id="currency"><option value="INR">INR ₹</option><option value="USD">USD $</option><option value="EUR">EUR €</option><option value="GBP">GBP £</option></select>
+          </div>
+        </div>
+      </div>
+      <div class="calc-result" aria-live="polite">
+        <div class="muted">Estimated monthly value of reclaimed time</div>
+        <div class="big shimmer" id="saving">0</div>
+        <div class="muted"><span id="hoursSaved">0</span> hours back every month</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="section" id="faq">
+  <div class="wrap narrow">
+    <div class="head reveal">
+      <div class="eyebrow">Questions</div>
+      <h2>Good to know before we talk.</h2>
+    </div>
+    <div class="faq reveal">
+      {% for f in faqs %}
+      <details>
+        <summary>{{ f.question }}</summary>
+        <p>{{ f.answer }}</p>
+      </details>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="section contact" id="contact">
+  <div class="wrap split">
+    <div class="col reveal">
+      <div class="eyebrow">Let us talk</div>
+      <h2>Tell us what eats up your week.</h2>
+      <p class="lede">Book a free consultation and we will show you which tasks an AI agent can take over first.</p>
+      <div class="contact-lines">
+        <div><span class="muted">Email</span><a href="mailto:{{ contact_email }}">{{ contact_email }}</a></div>
+        <div><span class="muted">Phone / WhatsApp</span><a href="tel:{{ contact_phone }}">{{ contact_phone }}</a></div>
+      </div>
+    </div>
+    <form class="col panel reveal" id="contactForm" action="{% url 'contact' %}" method="post" novalidate data-ajax>
+      {% csrf_token %}
+      <input class="hp" type="text" name="nickname" tabindex="-1" autocomplete="off" aria-hidden="true">
+      <div class="row">
+        <div class="field"><label for="c-name">Your name</label><input id="c-name" name="name" required autocomplete="name"><small class="err" data-for="name"></small></div>
+        <div class="field"><label for="c-email">Email</label><input id="c-email" type="email" name="email" required autocomplete="email"><small class="err" data-for="email"></small></div>
+      </div>
+      <div class="row">
+        <div class="field"><label for="c-company">Company (optional)</label><input id="c-company" name="company" autocomplete="organization"><small class="err" data-for="company"></small></div>
+        <div class="field"><label for="c-service">Interested in</label>
+          <select id="c-service" name="service">
+            {% for value, label in service_choices %}<option value="{{ value }}"{% if value == 'unsure' %} selected{% endif %}>{{ label }}</option>{% endfor %}
+          </select><small class="err" data-for="service"></small>
+        </div>
+      </div>
+      <div class="field"><label for="c-message">What would you like to automate?</label><textarea id="c-message" name="message" rows="5" required></textarea><small class="err" data-for="message"></small></div>
+      <button class="btn" type="submit">Send message</button>
+    </form>
+  </div>
+</section>
+
+</main>
+
+<footer class="footer">
+  <div class="wrap">
+    <div>© {{ brand }}. All rights reserved.</div>
+    <div class="flinks"><a href="#services">Services</a><a href="#aeo">AI visibility</a><a href="#contact">Contact</a></div>
+  </div>
+</footer>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<script src="{% static 'js/site.js' %}" defer></script>
+</body>
+</html>
