@@ -1,3 +1,7 @@
+import json
+from urllib.error import HTTPError, URLError
+from urllib.request import Request, urlopen
+
 from django.conf import settings
 from django.contrib import messages
 from django.core.cache import cache
@@ -195,6 +199,7 @@ def home(request):
             "brand": settings.SITE_NAME,
             "contact_email": settings.CONTACT_EMAIL,
             "contact_phone": settings.CONTACT_PHONE,
+            "chat_enabled": bool(settings.CHAT_API_KEY),
         },
     )
 
@@ -206,7 +211,11 @@ def service_detail(request, slug):
     return render(
         request,
         "core/service_detail.html",
-        {"service": service, "brand": settings.SITE_NAME},
+        {
+            "service": service,
+            "brand": settings.SITE_NAME,
+            "chat_enabled": bool(settings.CHAT_API_KEY),
+        },
     )
 
 
@@ -217,7 +226,7 @@ def _client_ip(request):
     return request.META.get("REMOTE_ADDR", "unknown")
 
 
-def _is_throttled(request, scope):
+def _is_throttled(request, scope, limit=None):
     """Very small per-IP rate limit using Django's cache."""
     key = f"form-rate:{scope}:{_client_ip(request)}"
     if cache.add(key, 1, 60):
@@ -227,7 +236,117 @@ def _is_throttled(request, scope):
     except ValueError:
         cache.set(key, 1, 60)
         return False
-    return count > settings.FORM_RATE_LIMIT
+    return count > (limit or settings.FORM_RATE_LIMIT)
+
+
+def _assistant_fallback(message):
+    text = message.lower()
+    if any(word in text for word in ("price", "pricing", "cost", "quote", "charge")):
+        return (
+            "Pricing depends on the workflow, tools, and level of support involved. Share what "
+            "you want to improve in the consultation form and the team can suggest a suitable scope."
+        )
+    if any(word in text for word in ("agent", "support", "lead", "assistant", "customer")):
+        return (
+            "Personalised AI agents can answer common questions, qualify leads, help with "
+            "scheduling, or find internal information, with clear handoff rules for your team. "
+            "See the AI agents service page or tell us which workflow you have in mind."
+        )
+    if any(word in text for word in ("automation", "invoice", "workflow", "integrat", "apps")):
+        return (
+            "Custom task automation connects the tools you already use to reduce manual entry "
+            "and handoffs. We first map your current process, then agree on triggers, approvals, "
+            "and exception handling."
+        )
+    if any(word in text for word in ("visibility", "optimization", "optimisation", "recommend", "search", "chatgpt")):
+        return (
+            "AI engine optimization helps make your business information clearer and easier for "
+            "AI assistants to interpret and cite. It can include a visibility review, content "
+            "structure improvements, and ongoing checks; specific recommendations cannot be guaranteed."
+        )
+    if any(word in text for word in ("human", "person", "contact", "talk", "consult", "email")):
+        return "You can reach the team using the consultation form on the homepage. Tell them what you are trying to improve and which tools you use."
+    return (
+        "I can help you compare AI agents, workflow automation, and AI visibility. What task "
+        "takes up the most time for your team, or what would you like customers to get help with?"
+    )
+
+
+def _assistant_reply(messages):
+    if not settings.CHAT_API_KEY:
+        return _assistant_fallback(messages[-1][1])
+
+    system_message = {
+        "role": "system",
+        "content": (
+            "You are the helpful website assistant for a small AI automation agency. Help "
+            "prospective customers understand three services: personalised AI agents for "
+            "customer support, lead follow-up, scheduling, and internal knowledge; custom task "
+            "automation connecting existing apps and workflows; and AI engine optimization to "
+            "make accurate business information easier for AI assistants to understand and cite. "
+            "Ask one concise follow-up question when needed. Recommend a relevant service, explain "
+            "that scope and pricing depend on discovery, and direct visitors to the consultation "
+            "form when they want a quote or human help. Never promise guaranteed savings, rankings, "
+            "or outcomes. Do not claim to have contacted anyone, changed systems, or taken actions. "
+            "Do not request sensitive personal or account information. Keep answers warm, brief, "
+            "and practical."
+        ),
+    }
+    payload = json.dumps({
+        "model": settings.CHAT_MODEL,
+        "messages": [system_message] + [
+            {"role": role, "content": content} for role, content in messages
+        ],
+        "max_tokens": 240,
+        "temperature": 0.4,
+    }).encode("utf-8")
+    request = Request(
+        settings.CHAT_API_URL,
+        data=payload,
+        headers={
+            "Authorization": f"Bearer {settings.CHAT_API_KEY}",
+            "Content-Type": "application/json",
+        },
+        method="POST",
+    )
+    try:
+        with urlopen(request, timeout=12) as response:
+            result = json.loads(response.read().decode("utf-8"))
+        answer = result["choices"][0]["message"]["content"].strip()
+        if not answer:
+            raise ValueError("The assistant returned an empty response.")
+        return answer[:1800]
+    except (HTTPError, URLError, TimeoutError, ValueError, KeyError, IndexError, TypeError):
+        return (
+            "I couldn't reach the assistant just now. You can still explore the service pages or "
+            "send the team a message through the consultation form."
+        )
+
+
+@require_POST
+def chat(request):
+    if _is_throttled(request, "chat", settings.CHAT_RATE_LIMIT):
+        return JsonResponse({"reply": "Please wait a moment before sending another message."}, status=429)
+    if len(request.body) > 16000:
+        return JsonResponse({"reply": "That message is too long. Please shorten it and try again."}, status=413)
+    try:
+        data = json.loads(request.body)
+    except (json.JSONDecodeError, UnicodeDecodeError):
+        return JsonResponse({"reply": "I couldn't read that message. Please try again."}, status=400)
+
+    raw_messages = data.get("messages") if isinstance(data, dict) else None
+    if not isinstance(raw_messages, list):
+        return JsonResponse({"reply": "Please send a message to get started."}, status=400)
+    messages = []
+    for item in raw_messages[-8:]:
+        if not isinstance(item, dict) or item.get("role") not in ("user", "assistant"):
+            continue
+        content = item.get("content")
+        if isinstance(content, str) and content.strip():
+            messages.append((item["role"], content.strip()[:1200]))
+    if not messages or messages[-1][0] != "user":
+        return JsonResponse({"reply": "Please send a message to get started."}, status=400)
+    return JsonResponse({"reply": _assistant_reply(messages)})
 
 
 def _wants_json(request):

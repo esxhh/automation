@@ -131,6 +131,12 @@ DEFAULT_FROM_EMAIL = os.environ.get("DEFAULT_FROM_EMAIL", CONTACT_EMAIL)
 # Where new enquiries are emailed. Leave empty to only store them in the database.
 NOTIFY_EMAIL = os.environ.get("NOTIFY_EMAIL", "")
 
+# --- Website assistant (the API key is server-side only) ---
+CHAT_API_KEY = os.environ.get("OPENAI_API_KEY", "").strip()
+CHAT_MODEL = os.environ.get("OPENAI_MODEL", "gpt-4o-mini")
+CHAT_API_URL = os.environ.get("OPENAI_API_URL", "https://api.openai.com/v1/chat/completions")
+CHAT_RATE_LIMIT = int(os.environ.get("CHAT_RATE_LIMIT", "20"))
+
 # --- Form rate limit (per IP, per minute) ---
 FORM_RATE_LIMIT = int(os.environ.get("FORM_RATE_LIMIT", "5"))
 

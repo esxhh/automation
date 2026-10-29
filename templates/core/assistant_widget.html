@@ -1,0 +1,30 @@
+<div class="assistant-widget" data-chat-endpoint="{% url 'chat' %}">
+  <button class="assistant-launcher" type="button" aria-label="Open the service assistant" aria-expanded="false" aria-controls="assistantPanel" title="Open the service assistant">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 11.5a7.5 7.5 0 0 1-7.5 7.5H6l-3 2v-9.5A7.5 7.5 0 0 1 10.5 4h2A7.5 7.5 0 0 1 20 11.5Z"/><path d="M8 11h8M8 14.5h5"/></svg>
+  </button>
+  <section class="assistant-panel" id="assistantPanel" aria-label="Website service assistant" hidden>
+    <header class="assistant-header">
+      <div class="assistant-heading">
+        <span class="assistant-mark" aria-hidden="true"><i></i></span>
+        <div><p class="assistant-kicker">{% if chat_enabled %}AI assistant{% else %}Service guide{% endif %}</p><h2>How can we help?</h2></div>
+      </div>
+      <button class="assistant-close" type="button" aria-label="Close assistant" title="Close">&times;</button>
+    </header>
+    <div class="assistant-messages" role="log" aria-live="polite" aria-relevant="additions text">
+      <article class="assistant-message assistant-message-bot">Hello. I can help you understand our services and find a good next step.</article>
+    </div>
+    <div class="assistant-suggestions" aria-label="Suggested questions">
+      <button type="button" data-prompt="Which service is right for my business?">Help me choose</button>
+      <button type="button" data-prompt="What does custom task automation include?">How does it work?</button>
+    </div>
+    <form class="assistant-form">
+      {% csrf_token %}
+      <label class="visually-hidden" for="assistantInput">Your message</label>
+      <textarea id="assistantInput" name="message" rows="1" maxlength="1200" placeholder="Ask a question..." required></textarea>
+      <button type="submit" aria-label="Send message" title="Send message">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg>
+      </button>
+    </form>
+    <p class="assistant-footnote">For a tailored recommendation, <a href="/#contact">talk with our team</a>.</p>
+  </section>
+</div>

@@ -2,6 +2,10 @@
 
 A one-page site for an AI agents and automation company, with a Django backend.
 
+## Website assistant
+
+The floating service assistant works without an external provider key using built-in service-guide replies. To enable generative AI responses, add `OPENAI_API_KEY` to the Render web service environment. Optionally set `OPENAI_MODEL` (defaults to `gpt-4o-mini`) and `OPENAI_API_URL` (defaults to the OpenAI-compatible chat-completions endpoint). Keep credentials in the hosting provider's environment settings; never put them in browser JavaScript or commit them to Git.
+
 ## What is in it
 
 - **Backend:** Django 5, SQLite by default.

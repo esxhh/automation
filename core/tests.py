@@ -1,6 +1,7 @@
 from django.core.cache import cache
 from django.test import TestCase, override_settings
 from django.urls import reverse
+from unittest.mock import patch
 
 from .models import AuditRequest, Inquiry
 
@@ -13,6 +14,8 @@ class HomeTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "Personalised AI agents")
         self.assertContains(response, "csrfmiddlewaretoken")
+        self.assertContains(response, "Open the service assistant")
+        self.assertContains(response, "data-chat-endpoint")
 
     def test_service_cards_link_to_detail_pages_in_new_tabs(self):
         response = self.client.get(reverse("home"))
@@ -99,3 +102,54 @@ class AuditTests(TestCase):
         )
         self.assertEqual(response.status_code, 200)
         self.assertEqual(AuditRequest.objects.get().website, "https://ashafoods.in")
+
+
+class ChatTests(TestCase):
+    def setUp(self):
+        cache.clear()
+        self.url = reverse("chat")
+
+    @override_settings(CHAT_API_KEY="")
+    def test_chat_uses_service_guide_when_api_key_is_missing(self):
+        response = self.client.post(
+            self.url,
+            data='{"messages":[{"role":"user","content":"What does automation do?"}]}',
+            content_type="application/json",
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertIn("Custom task automation", response.json()["reply"])
+
+    def test_chat_rejects_missing_user_message(self):
+        response = self.client.post(
+            self.url,
+            data='{"messages":[{"role":"assistant","content":"Hello"}]}',
+            content_type="application/json",
+        )
+        self.assertEqual(response.status_code, 400)
+
+    def test_chat_rejects_non_json_body(self):
+        response = self.client.post(self.url, data="not json", content_type="application/json")
+        self.assertEqual(response.status_code, 400)
+
+    @override_settings(CHAT_API_KEY="test-key")
+    @patch("core.views.urlopen")
+    def test_chat_uses_configured_ai_provider(self, mock_urlopen):
+        class FakeResponse:
+            def __enter__(self):
+                return self
+
+            def __exit__(self, *args):
+                return False
+
+            def read(self):
+                return b'{"choices":[{"message":{"content":"Tell me about your workflow."}}]}'
+
+        mock_urlopen.return_value = FakeResponse()
+        response = self.client.post(
+            self.url,
+            data='{"messages":[{"role":"user","content":"Can you help me?"}]}',
+            content_type="application/json",
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json()["reply"], "Tell me about your workflow.")
+        mock_urlopen.assert_called_once()
