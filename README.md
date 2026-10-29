@@ -9,7 +9,7 @@ A one-page site for an AI agents and automation company, with a Django backend.
   - "Free AI visibility check" form saves requests (`/api/audit/`).
   - Both have validation, a hidden honeypot field, CSRF protection, a per-IP rate limit, and optional email notification.
   - Admin at `/admin/` to read enquiries, mark them handled, and edit the **Services** and **FAQs** shown on the page.
-- **Frontend:** the sunset moth palette (night black with turquoise, green, gold, orange and ember red).
+- **Frontend:** a bright white theme with dark readable text and turquoise, green, gold, orange and ember-red accents.
   - Animated, tappable moth that follows the pointer.
   - Scroll reveal, glow that follows your finger or mouse, 3D tilt cards, magnetic buttons, button ripples, sparkles on tap, rotating headline words, live form validation, a savings estimator, FAQ accordion.
   - Respects the "reduce motion" setting.
