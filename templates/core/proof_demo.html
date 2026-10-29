@@ -1,0 +1,110 @@
+{% load static %}<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Proof &amp; service demos | {{ brand }}</title>
+<meta name="description" content="Explore illustrative demonstrations of NOUSVA AI agents, workflow automation, and AI visibility services.">
+<meta name="theme-color" content="#F8F6F2">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 44 36'%3E%3Cpath d='M21 15C16 3 6 2 3 8c-2 5 4 11 15 13-9 1-13 6-10 10 4 4 11 0 14-9 3 9 10 13 14 9 3-4-1-9-10-10 11-2 17-8 15-13-3-6-13-5-18 7' fill='%23A84F36'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&amp;family=Instrument+Serif:ital@0;1&amp;display=swap">
+<link rel="stylesheet" href="{% static 'css/site.css' %}">
+</head>
+<body class="proof-page">
+<header class="nav">
+  <div class="wrap">
+    <a href="{% url 'home' %}" class="logo">{% include "core/brand_mark.html" %}{{ brand }}</a>
+    <nav class="links" aria-label="Main">
+      <a href="{% url 'home' %}#services">Services</a>
+      <a href="{% url 'home' %}#contact" class="btn small">Talk with us</a>
+    </nav>
+  </div>
+</header>
+<main>
+  <section class="proof-page-hero">
+    <div class="wrap">
+      <a class="detail-back" href="{% url 'home' %}#proof">&larr; Back to NOUSVA</a>
+      <div class="eyebrow">See how the work could look</div>
+      <h1>Proof, with the demo behind it.</h1>
+      <p class="lede">Explore short examples of the services we design. These are illustrative demonstrations, not client deployments or guaranteed results.</p>
+      <a class="proof-scroll-link" href="#serviceDemos">Explore the service demos <span aria-hidden="true">&darr;</span></a>
+    </div>
+  </section>
+
+  <section class="section proof-demo-section" id="serviceDemos">
+    <div class="wrap">
+      <div class="head">
+        <div class="eyebrow">Service demonstrations</div>
+        <h2>Three ways to make routine work feel lighter.</h2>
+        <p class="lede">Choose a service to see a representative sample flow. No live business systems or customer data are connected.</p>
+      </div>
+      <div class="demo-tabs" role="tablist" aria-label="Choose a service demo">
+        {% for demo in demos %}<button class="demo-tab{% if forloop.first %} is-active{% endif %}" id="tab-{{ demo.id }}" type="button" role="tab" aria-selected="{% if forloop.first %}true{% else %}false{% endif %}" aria-controls="panel-{{ demo.id }}" tabindex="{% if forloop.first %}0{% else %}-1{% endif %}">{{ demo.label }}</button>{% endfor %}
+      </div>
+      <div class="demo-panels">
+        {% for demo in demos %}
+        <section class="demo-panel{% if forloop.first %} is-active{% endif %}" id="panel-{{ demo.id }}" role="tabpanel" aria-labelledby="tab-{{ demo.id }}"{% if not forloop.first %} hidden{% endif %}>
+          <div class="demo-intro">
+            <span class="demo-label">Illustrative demo · sample data only</span>
+            <h3>{{ demo.title }}</h3>
+          </div>
+          <img class="demo-image" src="{{ demo.image.url }}" alt="{{ demo.image.alt }}" loading="lazy" decoding="async">
+          {% if demo.id == "agents" %}
+          <div class="demo-surface conversation-demo" aria-label="Example support conversation">
+            <div class="demo-surface-top"><span>NOUSVA / support assistant</span><span class="demo-status"><i></i> Example flow</span></div>
+            <div class="demo-bubble demo-bubble-user">Can I change my delivery date?</div>
+            <div class="demo-bubble demo-bubble-agent">I can help with that. Please share your order reference so I can check the available options.</div>
+            <div class="demo-bubble demo-bubble-user">I would rather speak to someone.</div>
+            <div class="demo-handoff"><span class="handoff-icon" aria-hidden="true">↗</span><span><strong>Human handoff</strong><small>The assistant pauses and routes the request to your team.</small></span></div>
+          </div>
+          {% elif demo.id == "automation" %}
+          <div class="demo-surface workflow-demo">
+            <div class="demo-surface-top"><span>New client onboarding</span><span class="demo-status"><i></i> Sample workflow</span></div>
+            <ol class="workflow-steps">
+              <li class="workflow-step is-done"><span>01</span><div><strong>Form received</strong><small>Client details captured</small></div><b>Ready</b></li>
+              <li class="workflow-step"><span>02</span><div><strong>Review details</strong><small>Check required fields</small></div><b>Waiting</b></li>
+              <li class="workflow-step"><span>03</span><div><strong>Notify the team</strong><small>Assign an onboarding owner</small></div><b>Waiting</b></li>
+            </ol>
+            <div class="workflow-actions"><button class="btn small" type="button" data-demo-run>Run sample workflow</button><span class="demo-run-status" role="status" aria-live="polite">No systems are connected.</span></div>
+          </div>
+          {% else %}
+          <div class="demo-surface visibility-demo">
+            <div class="demo-surface-top"><span>Business information review</span><span class="demo-status"><i></i> Sample audit</span></div>
+            <div class="visibility-row"><span class="visibility-index">01</span><div><strong>Service description</strong><small>Specific, consistent wording across key pages</small></div><span class="visibility-tag">Review</span></div>
+            <div class="visibility-row"><span class="visibility-index">02</span><div><strong>Business details</strong><small>Location, contact, and offer clearly stated</small></div><span class="visibility-tag">Check</span></div>
+            <div class="visibility-row"><span class="visibility-index">03</span><div><strong>Useful answers</strong><small>Customer questions addressed in plain language</small></div><span class="visibility-tag">Improve</span></div>
+            <p class="visibility-note">Example review structure only. It is not a real audit or assessment of a business.</p>
+          </div>
+          {% endif %}
+        </section>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+
+  <section class="section alt proof-reviews-section" id="reviews">
+    <div class="wrap proof-reviews-wrap">
+      <div>
+        <div class="eyebrow">Customer reviews</div>
+        <h2>Real experiences deserve real names.</h2>
+        <p class="lede">We do not have customer testimonials approved for publication yet. When we do, they will appear here with permission and enough context to understand the work.</p>
+      </div>
+      <div class="reviews-empty">
+        <span class="review-mark" aria-hidden="true">N</span>
+        <strong>No published reviews yet</strong>
+        <p>For now, explore the service demos or ask us directly about a workflow similar to yours.</p>
+        <a href="mailto:{{ contact_email }}">Ask NOUSVA a question <span aria-hidden="true">&rarr;</span></a>
+      </div>
+    </div>
+  </section>
+  <section class="section proof-bottom-cta">
+    <div class="wrap detail-cta">
+      <div class="detail-cta-copy"><h2>Want to see your process in context?</h2><p>Tell us what takes time today, and we can talk through a practical first step.</p></div>
+      <a class="btn" href="{% url 'home' %}#contact">Talk with NOUSVA <span aria-hidden="true">&rarr;</span></a>
+    </div>
+  </section>
+</main>
+<footer class="detail-footer"><div class="wrap"><span>© {{ brand }}</span><a href="mailto:{{ contact_email }}">{{ contact_email }}</a><a href="{% url 'home' %}">Back to home</a></div></footer>
+<script src="{% static 'js/proof.js' %}" defer></script>
+</body>
+</html>

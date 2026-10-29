@@ -214,6 +214,37 @@ def home(request):
     )
 
 
+def proof_demo(request):
+    return render(
+        request,
+        "core/proof_demo.html",
+        {
+            "brand": settings.SITE_NAME,
+            "contact_email": settings.CONTACT_EMAIL,
+            "demos": [
+                {
+                    "id": "agents",
+                    "label": "AI agents",
+                    "title": "A support conversation, with a human handoff",
+                    "image": SERVICE_IMAGES["personalised-ai-agents"],
+                },
+                {
+                    "id": "automation",
+                    "label": "Automation",
+                    "title": "A request moving through a clear workflow",
+                    "image": SERVICE_IMAGES["custom-task-automation"],
+                },
+                {
+                    "id": "visibility",
+                    "label": "AI visibility",
+                    "title": "A structured review of how a business is described",
+                    "image": SERVICE_IMAGES["ai-engine-optimization"],
+                },
+            ],
+        },
+    )
+
+
 def service_detail(request, slug):
     service = SERVICE_DETAILS.get(slug)
     if service is None:

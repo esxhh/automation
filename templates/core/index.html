@@ -24,7 +24,7 @@
     <nav class="links" id="mainNav" aria-label="Main">
       <a href="#services">Services</a>
       <a href="#process">How it works</a>
-      <a href="#proof">Proof</a>
+      <a href="{% url 'proof-demo' %}" target="_blank" rel="noopener">Proof &amp; demos <span aria-hidden="true">↗</span></a>
       <a href="#insights">Insights</a>
       <a href="#aeo">AI visibility</a>
       <a href="#savings">Savings</a>
@@ -152,6 +152,7 @@
       <article class="proof-example reveal"><span class="proof-label">Illustrative placeholder · not a real review</span><blockquote>“A verified customer quote about clearer AI visibility will appear here after approval.”</blockquote><p>Customer name and organization shown only with permission.</p></article>
     </div>
     <div class="proof-note"><strong>Our standard:</strong> named outcomes and testimonials will be published only when verified and approved by the customer.</div>
+    <a class="btn proof-open-link" href="{% url 'proof-demo' %}" target="_blank" rel="noopener">View proof &amp; service demos <span aria-hidden="true">&nearr;</span></a>
   </div>
 </section>
 
@@ -318,7 +319,7 @@
 <footer class="footer">
   <div class="wrap">
     <div>© {{ brand }}. All rights reserved.</div>
-    <div class="flinks"><a href="#services">Services</a><a href="#proof">Proof</a><a href="#insights">Insights</a><a href="#contact">Contact</a></div>
+    <div class="flinks"><a href="#services">Services</a><a href="{% url 'proof-demo' %}" target="_blank" rel="noopener">Proof &amp; demos <span aria-hidden="true">↗</span></a><a href="#insights">Insights</a><a href="#contact">Contact</a></div>
   </div>
 </footer>
 

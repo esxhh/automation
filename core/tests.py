@@ -23,6 +23,7 @@ class HomeTests(TestCase):
         self.assertContains(response, "NOUSVA notes")
         self.assertContains(response, "brand-butterfly")
         self.assertContains(response, "service-image")
+        self.assertContains(response, f'href="{reverse("proof-demo")}" target="_blank" rel="noopener"')
 
     def test_service_cards_link_to_detail_pages_in_new_tabs(self):
         response = self.client.get(reverse("home"))
@@ -55,6 +56,15 @@ class HomeTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "where a person should stay in the loop")
         self.assertEqual(self.client.get("/insights/not-an-article/").status_code, 404)
+
+    def test_proof_demo_page_contains_all_service_demos(self):
+        response = self.client.get(reverse("proof-demo"))
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "No published reviews yet")
+        self.assertContains(response, "A support conversation, with a human handoff")
+        self.assertContains(response, "A request moving through a clear workflow")
+        self.assertContains(response, "A structured review of how a business is described")
+        self.assertContains(response, "data-demo-run")
 
 
 class AuthenticationTests(TestCase):
